@@ -1,6 +1,6 @@
 require("colors");
 const assert = require("assert");
-// const prompt = require("node-ask").prompt;
+const prompt = require("node-ask").prompt;
 const print = console.log;
 const maxBy = require("lodash.maxby");
 const { formatText } = require("./utils");
@@ -12,7 +12,7 @@ const VALID_PROPS_CONFIG_KEYS = ["description", "required", "default"];
 const VALID_LISTS_CONFIG_KEYS = ["description"];
 
 function Sly(config) {
-  const store = require("dot-file-config")(config.name);
+  const store = require("dot-file-config")("." + config.name);
   const [, , ...args] = process.argv;
   const [command, key, value] = args;
 
@@ -98,7 +98,19 @@ function persistDefaultValues(config, store) {
 }
 
 function executeCommand(command, config, store, args) {
-  config.commands[command].execute(sanitizedStoreData(config, store.data), args);
+  let promise = Promise.resolve();
+  const commandObject = config.commands[command];
+  Object.keys(config.props || []).forEach(prop => {
+    const { required, description } = config.props[prop];
+    if (required && !store.data[prop]) {
+      promise = promise.then(() => prompt(`Enter a ${description}: `)).then(value => {
+        store.data[prop] = value;
+        store.save();
+        return Promise.resolve();
+      });
+    }
+  });
+  promise.then(() => commandObject.execute(sanitizedStoreData(config, store.data), args));
 }
 
 function sanitizedStoreData(config, store) {

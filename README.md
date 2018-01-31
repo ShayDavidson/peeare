@@ -41,3 +41,7 @@ First, you'll need to generate a Github access token.
 ## Tips
 
 - In OSX, you can CMD+double-click to open the printed URLs directly.
+
+## Known bugs
+
+- Unresolved promise error when running `peeare` without users or repos.
