@@ -2,10 +2,12 @@ require("colors");
 const assert = require("assert");
 // const prompt = require("node-ask").prompt;
 const print = console.log;
+const maxBy = require("lodash.maxby");
+const { formatText } = require("./utils");
 
 const RESERVED_COMMANDS = ["help", "reset", "set", "get", "list", "add", "remove"];
 const VALID_CONFIG_KEYS = ["name", "commands", "props", "lists"];
-const VALID_COMMAND_CONFIG_KEYS = ["description", "execute"];
+const VALID_COMMAND_CONFIG_KEYS = ["description", "execute", "args"];
 const VALID_PROPS_CONFIG_KEYS = ["description", "required", "default"];
 const VALID_LISTS_CONFIG_KEYS = ["description"];
 
@@ -112,7 +114,44 @@ function formatCommand(string) {
 }
 
 function printHelpMessage(config) {
-  return config;
+  const { name, commands, props, lists } = config;
+  const messages = [];
+
+  Object.keys(commands).forEach(command => {
+    const { description, args } = commands[command];
+    const argsString = args ? args.map(arg => `<${arg}>`).join(" ") : "";
+    messages.push({ command: command === "default" ? name : `${name} ${command} ${argsString}`, help: description });
+  });
+
+  messages.push({ command: `${name} reset`, help: "Resets your local config." });
+
+  Object.keys(props).forEach(prop => {
+    const { description } = props[prop];
+    const defaultValue = props[prop].default;
+    const defaultValueString = defaultValue ? `Defaults to ${defaultValue}.` : "";
+    messages.push({ command: `${name} get ${prop}`, help: `Shows the ${description} from your local config. ${defaultValueString}` });
+    messages.push({ command: `${name} set ${prop} <${prop}>`, help: `Sets <${prop}> as the ${description} in your local config.` });
+  });
+
+  Object.keys(lists).forEach(list => {
+    const { description } = lists[list];
+    messages.push({
+      command: `${name} list ${list}`,
+      help: `Lists all the ${description} in your local config.`
+    });
+    messages.push({
+      command: `${name} add ${list} <${list}>`,
+      help: `Adds <${list}> (command separated) to the ${description} you want to track in your local config.`
+    });
+    messages.push({
+      command: `${name} remove ${list} <${list}>`,
+      help: `Removes <${list}> (command separated) from the ${description} you want to track in your local config.`
+    });
+  });
+  const maxCommandLength = maxBy(messages, message => message.command.length).command.length;
+  messages.forEach(message => {
+    print(`   - ${formatText(message.command, maxCommandLength, " ").cyan} - ${message.help}`);
+  });
 }
 
 function printInvalidCommandMessage({ name }) {

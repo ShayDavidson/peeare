@@ -26,7 +26,7 @@ function fetchAndDisplayPullRequests(githubHostname, githubAccessToken, repos = 
     .then(prsInfo => prsInfo.filter(prInfo => users.includes(prInfo.author)))
     .then(relevantPRs => {
       const maxPRTitle = realLength(maxBy(relevantPRs, pr => realLength(pr.title)).title);
-      const maxPRAuthor = realLength(maxBy(relevantPRs, pr => realLength(pr.author)).author);
+      const maxPRAuthor = maxBy(relevantPRs, pr => pr.author.length).author.length;
       return sortBy(relevantPRs, "author").map(pr => formatPullRequest(pr, maxPRTitle, maxPRAuthor));
     })
     .then(formattedPRs => formattedPRs.forEach(pr => print(pr)))
