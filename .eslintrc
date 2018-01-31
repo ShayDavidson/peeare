@@ -1,0 +1,14 @@
+{
+  "extends": ["eslint:recommended", "prettier", "plugin:import/errors", "plugin:unicorn/recommended"],
+  "plugins": ["unicorn", "prettier"],
+  "env": {
+    "amd": true,
+    "node": true
+  },
+  "rules": {
+    "no-console": 0,
+    "prettier/prettier": "error",
+    "unicorn/filename-case": ["error", {"case": "snakeCase"}],
+    "unicorn/number-literal-case": 0
+  }
+}
