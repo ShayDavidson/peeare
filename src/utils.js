@@ -24,3 +24,8 @@ function formatText(text, maxLength, char = " ", align = "left") {
     return truncatedString;
   }
 }
+
+module.exports = {
+  realLength,
+  formatText
+};
