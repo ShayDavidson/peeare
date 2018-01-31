@@ -2,6 +2,8 @@
 
 Track your team's pull requests across multiple repos.
 
+![peeare screenshot](https://user-images.githubusercontent.com/1366521/35621094-dda2f77a-068b-11e8-84b1-e94377d22f36.png)
+
 ## Installation
 
 Run this in your shell:
@@ -18,7 +20,7 @@ If you use `nodenv`, run `nodenv rehash` right after installing.
 
 First, you'll need to generate a Github access token.
 - Go to this link: https://github.com/settings/tokens (or your enterprise version of the URL if you're using Github Enterprise).
--
+- Run in your shell the `peeare` command. You'll be asked to enter a Github access token. Enter the one you've generated in the step above. 
 
 ### Commands
 
@@ -39,8 +41,3 @@ First, you'll need to generate a Github access token.
 ## Tips
 
 - In OSX, you can CMD+double-click to open the printed URLs directly.
-
-## TODO
-
-- Help message.
-- Prompt for help in values + truncate by longest.

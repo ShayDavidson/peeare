@@ -5,22 +5,9 @@ const flatten = require("lodash.flatten");
 const sortBy = require("lodash.sortby");
 const maxBy = require("lodash.maxby");
 const print = console.log;
+const { realLength, formatText } = require("./utils");
 
 const MAX_PRS_TO_FETCH = 100;
-
-// counts emoji as a single char
-function realLength(str) {
-  const joiner = "\u{200D}";
-  const split = str.split(joiner);
-  let count = 0;
-
-  for (const s of split) {
-    const num = Array.from(s.split(/[\ufe00-\ufe0f]/).join("")).length;
-    count += num;
-  }
-
-  return count / split.length;
-}
 
 function fetchAndDisplayPullRequests(githubHostname, githubAccessToken, repos = [], users = []) {
   const spinner = ora();
@@ -45,7 +32,8 @@ function fetchAndDisplayPullRequests(githubHostname, githubAccessToken, repos = 
     .then(formattedPRs => formattedPRs.forEach(pr => print(pr)))
     .catch(err => {
       spinner.stop();
-      print(err.red || "Something unknown went wrong :(".red);
+      print("Oops! Something went wrong:".red);
+      print(err.stack.red);
     });
 }
 
@@ -66,19 +54,6 @@ function fetchPullRequest(githubClient, githubRootURL, repo) {
 
 function formatPullRequest(pr, maxPRTitle, maxPRAuthor) {
   return `- ${formatText(pr.title, maxPRTitle, "·").green} by ${formatText(pr.author, maxPRAuthor, " ").yellow} - ${pr.url.cyan}`;
-}
-
-function formatText(text, maxLength, char = " ", align = "left") {
-  const truncatedString = text.substring(0, maxLength);
-  if (realLength(truncatedString) < maxLength) {
-    if (align == "left") {
-      return truncatedString + char.repeat(maxLength - realLength(truncatedString));
-    } else {
-      return char.repeat(maxLength - realLength(truncatedString)) + truncatedString;
-    }
-  } else {
-    return truncatedString;
-  }
 }
 
 function extractPullRequestInfo(pr) {
