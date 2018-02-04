@@ -110,13 +110,15 @@ function executeCommand(command, config, store, args) {
       });
     }
   });
-  promise.then(() => commandObject.execute(sanitizedStoreData(config, store.data), args));
+  promise.then(() => commandObject.execute(sanitizedStoreData(config, store.data), args)).catch(err => {
+    console.log(err.stack.red);
+  });
 }
 
 function sanitizedStoreData(config, store) {
   const clonedStore = Object.assign(store);
   Object.keys(config.lists || []).forEach(key => {
-    clonedStore[key] = Object.keys(store[key]);
+    clonedStore[key] = Object.keys(store[key] || []);
   });
   return clonedStore;
 }
