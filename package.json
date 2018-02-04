@@ -16,7 +16,7 @@
     "url": "https://github.com/ShayDavidson/peeare"
   },
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "src/cli.js",
   "engines": {
     "node": ">=6.0.0"
   },
