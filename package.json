@@ -1,6 +1,6 @@
 {
   "name": "peeare",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Track your team's pull requests across multiple repos.",
   "author": "Shay Davidson <shay.h.davidson@gmail.com>",
   "keywords": [
@@ -35,6 +35,7 @@
   "dependencies": {
     "colors": "^1.1.2",
     "dot-file-config": "^0.6.1",
+    "kinder": "^1.0.1",
     "lodash.flatten": "^4.4.0",
     "lodash.maxby": "^4.6.0",
     "lodash.sortby": "^4.7.0",
