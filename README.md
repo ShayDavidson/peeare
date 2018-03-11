@@ -1,6 +1,6 @@
 # peeare
 
-Troubled by the fact Github UI doesn't allow querying pull-requests by multiple authors, even in the same repo? Worry not! With the `peeare` shell command you can track your entire team's pull requests across multiple repos! 
+Troubled by the fact Github UI doesn't allow querying pull-requests by multiple authors, even in the same repo? Worry not! With the `peeare` shell command you can track your entire team's pull requests across multiple repos!
 
 ![peeare screenshot](https://user-images.githubusercontent.com/1366521/35621094-dda2f77a-068b-11e8-84b1-e94377d22f36.png)
 

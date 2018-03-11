@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 const peeare = require("./peeare");
-const Sly = require("./sly");
+const Kinder = require("kinder");
 
-Sly({
+Kinder({
   name: "peeare",
   commands: {
     default: {
