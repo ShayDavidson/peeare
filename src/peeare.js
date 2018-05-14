@@ -66,6 +66,16 @@ function extractPullRequestInfo(pr) {
 
 module.exports = {
   run(data) {
-    fetchAndDisplayPullRequests(data.hostname, data.at, data.repos, data.users);
+    let valid = true;
+    if (data.repos.length == 0) {
+      print("You need to add at least one repo for query. Use `peeare add repos <repo path>`.".red);
+      valid = false;
+    }
+    if (data.users.length == 0) {
+      print("You need to add at least one user for query. Use `peeare add users <user path>`.".red);
+      valid = false;
+    }
+
+    if (valid) fetchAndDisplayPullRequests(data.hostname, data.at, data.repos, data.users);
   }
 };
