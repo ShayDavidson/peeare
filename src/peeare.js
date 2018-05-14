@@ -68,11 +68,11 @@ module.exports = {
   run(data) {
     let valid = true;
     if (data.repos.length == 0) {
-      print("You need to add at least one repo for query. Use `peeare add repos <repo path>`.".red);
+      print("You need to add at least one repo for query. Use `peeare add repos <repo>`.".red);
       valid = false;
     }
     if (data.users.length == 0) {
-      print("You need to add at least one user for query. Use `peeare add users <user path>`.".red);
+      print("You need to add at least one user for query. Use `peeare add users <user>`.".red);
       valid = false;
     }
 
