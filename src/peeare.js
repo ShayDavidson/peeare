@@ -25,11 +25,19 @@ function fetchAndDisplayPullRequests(githubHostname, githubAccessToken, repos = 
     .then(prs => flatten(prs).map(pr => extractPullRequestInfo(pr)))
     .then(prsInfo => prsInfo.filter(prInfo => users.includes(prInfo.author)))
     .then(relevantPRs => {
+      if (relevantPRs.length == 0) return [];
+
       const maxPRTitle = realLength(maxBy(relevantPRs, pr => realLength(pr.title)).title);
       const maxPRAuthor = maxBy(relevantPRs, pr => pr.author.length).author.length;
       return sortBy(relevantPRs, "author").map(pr => formatPullRequest(pr, maxPRTitle, maxPRAuthor));
     })
-    .then(formattedPRs => formattedPRs.forEach(pr => print(pr)))
+    .then(formattedPRs => {
+      if (formattedPRs.length == 0) {
+        print("Could not find matching PRs.".yellow);
+      } else {
+        formattedPRs.forEach(pr => print(pr));
+      }
+    })
     .catch(err => {
       spinner.stop();
       print("Oops! Something went wrong:".red);
