@@ -9,6 +9,13 @@ const { realLength, formatText } = require("./utils");
 
 const MAX_PRS_TO_FETCH = 100;
 
+const STATUSES = {
+  error: "❌",
+  failure: "❌",
+  pending: "🕙",
+  success: "✅"
+};
+
 function fetchAndDisplayPullRequests(githubHostname, githubAccessToken, repos = [], users = []) {
   const spinner = ora();
   spinner.start(`Fetching PRs...`);
@@ -26,7 +33,9 @@ function fetchAndDisplayPullRequests(githubHostname, githubAccessToken, repos = 
     .then(prsInfo => prsInfo.filter(prInfo => users.includes(prInfo.author)))
     .then(relevantPRs => {
       if (relevantPRs.length == 0) return [];
-
+      return Promise.all(relevantPRs.map(pr => attachStatusToPullRequest(pr)));
+    })
+    .then(relevantPRs => {
       const maxPRTitle = realLength(maxBy(relevantPRs, pr => realLength(pr.title)).title);
       const maxPRAuthor = maxBy(relevantPRs, pr => pr.author.length).author.length;
       return sortBy(relevantPRs, "author").map(pr => formatPullRequest(pr, maxPRTitle, maxPRAuthor));
@@ -61,15 +70,24 @@ function fetchPullRequest(githubClient, githubRootURL, repo) {
 }
 
 function formatPullRequest(pr, maxPRTitle, maxPRAuthor) {
-  return `- ${formatText(pr.title, maxPRTitle, "·").green} by ${formatText(pr.author, maxPRAuthor, " ").yellow} - ${pr.url.cyan}`;
+  return `- ${formatText(pr.title, maxPRTitle, "·").green} by ${formatText(pr.author, maxPRAuthor, " ").yellow} - ${pr.url.cyan} ${
+    pr.status ? STATUSES[pr.status] : ""
+  }`;
 }
 
 function extractPullRequestInfo(pr) {
   return {
     author: pr.user.login,
     url: pr.htmlUrl,
-    title: pr.title
+    title: pr.title,
+    statuses: pr.statuses.fetchAll
   };
+}
+
+function attachStatusToPullRequest(pr) {
+  return pr.statuses().then(statuses => {
+    return Object.assign(pr, { status: statuses[0] ? statuses[0].state : undefined });
+  });
 }
 
 module.exports = {
