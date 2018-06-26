@@ -70,9 +70,9 @@ function fetchPullRequest(githubClient, githubRootURL, repo) {
 }
 
 function formatPullRequest(pr, maxPRTitle, maxPRAuthor) {
-  return `- ${formatText(pr.title, maxPRTitle, "·").green} by ${formatText(pr.author, maxPRAuthor, " ").yellow} - ${pr.url.cyan} ${
-    pr.status ? STATUSES[pr.status] : ""
-  }`;
+  return `- ${formatText(pr.title, maxPRTitle, "·").green} by ${formatText(pr.author, maxPRAuthor, " ").yellow} - ${
+    pr.status ? STATUSES[pr.status] + " " : "  "
+  } ${pr.url.cyan}`;
 }
 
 function extractPullRequestInfo(pr) {
