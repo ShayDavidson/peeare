@@ -35,7 +35,7 @@ First, you'll need to generate a Github access token.
 - `peeare add users <users, command separated>` - Adds <users> (command separated) to the Github users you want to track in your local config.
 - `peeare remove users <users, command separated>` - Removes <users> (command separated) from the Github users you want to track in your local config.
 - `peeare list repos` - Lists all the Github repos in your local config.
-- `peeare add repos <repos, command separated>` - Adds <repos> (command separated) to the Github repos you want to track in your local config.
+- `peeare add repos <repos, command separated>` - Adds <repos> (command separated) to the Github repos you want to track in your local config. Repos should be in `<org>/<repo-name>` format.
 - `peeare remove repos <repos, command separated>` - Removes <repos> (command separated) from the Github repos you want to track in your local config.
 
 ## Tips

@@ -94,7 +94,7 @@ module.exports = {
   run(data) {
     let valid = true;
     if (data.repos.length == 0) {
-      print("You need to add at least one repo for query. Use `peeare add repos <repo>`.".red);
+      print("You need to add at least one repo for query. Use `peeare add repos <org>/<repo-name>".red);
       valid = false;
     }
     if (data.users.length == 0) {
